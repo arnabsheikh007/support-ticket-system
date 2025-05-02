@@ -12,4 +12,28 @@ class TicketController extends Controller
         $tickets = Ticket::where('user_id', auth()->id())->get();
         return view('tickets.index', compact('tickets'));
     }
+
+    public function create()
+    {
+        return view('tickets.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'priority' => 'required|in:low,medium,high',
+        ]);
+
+        Ticket::create([
+            'user_id' => auth()->id(),
+            'title' => $request->title,
+            'description' => $request->description,
+            'priority' => $request->priority,
+            'status' => 'open',
+        ]);
+
+        return redirect()->route('tickets.index')->with('success', 'Ticket created successfully.');
+    }
 }
