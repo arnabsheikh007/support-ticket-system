@@ -18,7 +18,8 @@ class AdminTicketController extends Controller
     public function show(Ticket $ticket)
     {
         $supportEngineers = User::where('role', 'support_engineer')->get();
-        return view('admin.tickets.show', compact('ticket', 'supportEngineers'));
+        $comments = $ticket->comments;
+        return view('admin.tickets.show', compact('ticket', 'supportEngineers', 'comments'));
     }
 
     public function update(Request $request, Ticket $ticket)

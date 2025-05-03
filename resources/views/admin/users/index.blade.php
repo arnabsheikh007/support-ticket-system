@@ -34,7 +34,7 @@
                                     <td class="px-4 py-2">
                                         <span
                                             class="@if ($user->role == 'admin') text-purple-600 @elseif($user->role == 'support_engineer') text-green-600 @else text-blue-600 @endif font-medium">
-                                            {{ ucfirst($user->role) }}
+                                            {{ ucwords(str_replace('_', ' ', $user->role)) }}
                                         </span>
                                     </td>
                                     <td class="px-4 py-2">{{ $user->created_at->format('M d, Y H:i') }}</td>

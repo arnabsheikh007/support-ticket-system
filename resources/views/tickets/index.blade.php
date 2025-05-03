@@ -33,13 +33,13 @@
                                     <td class="px-4 py-2">
                                         <span
                                             class="@if ($ticket->priority == 'low') text-green-600 @elseif($ticket->priority == 'medium') text-yellow-600 @else text-red-600 @endif font-medium">
-                                            {{ ucfirst($ticket->priority) }}
+                                            {{ ucwords(str_replace('_', ' ', $ticket->priority)) }}
                                         </span>
                                     </td>
                                     <td class="px-4 py-2">
                                         <span
                                             class="@if ($ticket->status == 'open') text-blue-600 @elseif($ticket->status == 'in_progress') text-orange-600 @else text-gray-600 @endif font-medium">
-                                            {{ ucfirst($ticket->status) }}
+                                            {{ ucwords(str_replace('_', ' ', $ticket->status)) }}
                                         </span>
                                     </td>
                                     <td class="px-4 py-2">{{ $ticket->created_at->format('M d, Y H:i') }}</td>
