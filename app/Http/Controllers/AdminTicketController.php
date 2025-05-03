@@ -10,8 +10,9 @@ class AdminTicketController extends Controller
 {
     public function index()
     {
-        $tickets = Ticket::all();
-        return view('admin.tickets.index', compact('tickets'));
+        $tickets = Ticket::paginate(10);
+        $supportEngineers = User::where('role', 'support_engineer')->get();
+        return view('admin.tickets.index', compact('tickets', 'supportEngineers'));
     }
 
     public function show(Ticket $ticket)
