@@ -40,12 +40,18 @@ class TicketController extends Controller
 
     public function show(Ticket $ticket)
     {
+        if (auth()->user()->id !== $ticket->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
         $comments = $ticket->comments;
         return view('tickets.show', compact('ticket', 'comments'));
     }
 
     public function storeComment(Request $request, Ticket $ticket)
     {
+        if (auth()->user()->id !== $ticket->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'comment' => 'required|string',
         ]);

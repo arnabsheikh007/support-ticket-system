@@ -16,11 +16,18 @@ class SupportEngineerController extends Controller
 
     public function show(Ticket $ticket)
     {
-        return view('support.tickets.show', compact('ticket'));
+        if ($ticket->support_engineer_id && auth()->user()->id !== $ticket->support_engineer_id) {
+            abort(403, 'Unauthorized action.');
+        }
+        $comments = $ticket->comments;
+        return view('support.tickets.show', compact('ticket', 'comments'));
     }
 
     public function update(Request $request, Ticket $ticket)
     {
+        if ($ticket->support_engineer_id !== auth()->user()->id) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'status' => 'required|in:open,closed,in_progress',
         ]);
@@ -37,6 +44,10 @@ class SupportEngineerController extends Controller
 
     public function storeComment(Request $request, Ticket $ticket)
     {
+        if ($ticket->support_engineer_id !== auth()->user()->id) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $request->validate([
             'comment' => 'required|string',
         ]);

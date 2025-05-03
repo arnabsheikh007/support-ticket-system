@@ -25,13 +25,18 @@ require __DIR__.'/auth.php';
 
 // Application Routes
 Route::middleware('auth')->group(function () {
-    Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
-    Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
-    Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
-    Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
-    Route::post('/tickets/{ticket}/comments', [TicketController::class, 'storeComment'])->name('tickets.comments.store');
+    // User Routes
+    Route::middleware('role:user')->group(function () {
+        Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
+        Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
+        Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
+        Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
+        Route::post('/tickets/{ticket}/comments', [TicketController::class, 'storeComment'])->name('tickets.comments.store');
+    });
 
-    Route::prefix('admin')->group(function () {
+    // Admin Routes
+    Route::prefix('admin')->middleware('role:admin')->group(function () {
+        // Ticket Management Routes
         Route::get('/tickets', [AdminTicketController::class, 'index'])->name('admin.tickets.index');
         Route::get('/tickets/{ticket}', [AdminTicketController::class, 'show'])->name('admin.tickets.show');
         Route::put('/tickets/{ticket}', [AdminTicketController::class, 'update'])->name('admin.tickets.update');
@@ -44,7 +49,8 @@ Route::middleware('auth')->group(function () {
         Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('admin.users.update');
     });
 
-    Route::prefix('support')->group(function () {
+    // Support Engineer Routes
+    Route::prefix('support')->middleware('role:support_engineer')->group(function () {
         Route::get('/tickets', [SupportEngineerController::class, 'index'])->name('support.tickets.index');
         Route::get('/tickets/{ticket}', [SupportEngineerController::class, 'show'])->name('support.tickets.show');
         Route::put('/tickets/{ticket}', [SupportEngineerController::class, 'update'])->name('support.tickets.update');
