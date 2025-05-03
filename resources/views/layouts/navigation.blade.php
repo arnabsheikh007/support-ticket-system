@@ -79,7 +79,6 @@
             </x-dropdown>
         @else
             <a href="{{ route('login') }}" class="text-sm text-white underline hover:text-gray-200">Log in</a>
-            <a href="{{ route('register') }}" class="ml-4 text-sm text-white underline hover:text-gray-200">Register</a>
         @endauth
     </div>
 </nav>
