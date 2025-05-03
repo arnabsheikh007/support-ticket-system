@@ -10,7 +10,7 @@ class AdminUserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(10);
         return view('admin.users.index', compact('users'));
     }
 
@@ -51,5 +51,16 @@ class AdminUserController extends Controller
 
         $user->update(['role' => $request->role]);
         return redirect()->back()->with('success', 'User role updated successfully.');
+    }
+
+    public function destroy(User $user)
+    {
+        
+        if ($user->id === auth()->id()) {
+            return redirect()->back()->with('error', 'You cannot delete your own account.');
+        }
+
+        $user->delete();
+        return redirect()->back()->with('success', 'User deleted successfully.');
     }
 }

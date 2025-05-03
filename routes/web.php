@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/users/create', [AdminUserController::class, 'create'])->name('admin.users.create');
         Route::post('/users', [AdminUserController::class, 'store'])->name('admin.users.store');
         Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('admin.users.update');
+        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
     });
 
     // Support Engineer Routes
