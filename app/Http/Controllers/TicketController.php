@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class TicketController extends Controller
@@ -35,5 +36,26 @@ class TicketController extends Controller
         ]);
 
         return redirect()->route('tickets.index')->with('success', 'Ticket created successfully.');
+    }
+
+    public function show(Ticket $ticket)
+    {
+        $comments = $ticket->comments;
+        return view('tickets.show', compact('ticket', 'comments'));
+    }
+
+    public function storeComment(Request $request, Ticket $ticket)
+    {
+        $request->validate([
+            'comment' => 'required|string',
+        ]);
+
+        Comment::create([
+            'ticket_id' => $ticket->id,
+            'user_id' => auth()->id(),
+            'comment' => $request->comment,
+        ]);
+
+        return redirect()->back()->with('success', 'Comment added successfully.');
     }
 }
