@@ -7,6 +7,9 @@
                 <x-nav-link :href="route('admin.tickets.index')" :active="request()->routeIs('admin.tickets.*')">
                     {{ __('Admin Dashboard') }}
                 </x-nav-link>
+                <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                    {{ __('Manage Users') }}
+                </x-nav-link>
             @elseif (Auth::user()->role === 'support_engineer')
                 <x-nav-link :href="route('support.tickets.index')" :active="request()->routeIs('support.tickets.*')">
                     {{ __('Support Dashboard') }}
@@ -41,6 +44,12 @@
                     @if (Auth::user()->role === 'admin')
                         <x-dropdown-link :href="route('admin.tickets.index')">
                             {{ __('Admin Dashboard') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('admin.users.index')">
+                            {{ __('Manage Users') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('admin.users.create')">
+                            {{ __('Create New User') }}
                         </x-dropdown-link>
                     @elseif (Auth::user()->role === 'support_engineer')
                         <x-dropdown-link :href="route('support.tickets.index')">

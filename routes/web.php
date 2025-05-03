@@ -1,8 +1,9 @@
 <?php
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminTicketController;
 use App\Http\Controllers\SupportEngineerController;
-use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -35,6 +36,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/tickets/{ticket}', [AdminTicketController::class, 'show'])->name('admin.tickets.show');
         Route::put('/tickets/{ticket}', [AdminTicketController::class, 'update'])->name('admin.tickets.update');
         Route::put('/tickets/{ticket}/assign', [AdminTicketController::class, 'assign'])->name('admin.tickets.assign');
+
+        // User Management Routes
+        Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+        Route::get('/users/create', [AdminUserController::class, 'create'])->name('admin.users.create');
+        Route::post('/users', [AdminUserController::class, 'store'])->name('admin.users.store');
+        Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('admin.users.update');
     });
 
     Route::prefix('support')->group(function () {
