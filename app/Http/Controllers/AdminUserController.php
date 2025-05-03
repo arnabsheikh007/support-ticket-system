@@ -23,9 +23,19 @@ class AdminUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
-            'role' => 'required|in:user,support_engineer,admin',
+            'email' => 'required|email|unique:users,email|max:255',
+            'password' => 'required|string|min:8|confirmed', 
+            'role' => 'required|in:admin,user,support_engineer',
+        ], [
+            'name.required' => 'Please enter the user’s name.',
+            'email.required' => 'Please enter an email address.',
+            'email.email' => 'Please enter a valid email address.',
+            'email.unique' => 'This email is already registered.',
+            'password.required' => 'Please enter a password.',
+            'password.min' => 'The password must be at least 8 characters long.',
+            'password.confirmed' => 'The password confirmation does not match.',
+            'role.required' => 'Please select a role.',
+            'role.in' => 'Please select a valid role.',
         ]);
 
         User::create([
