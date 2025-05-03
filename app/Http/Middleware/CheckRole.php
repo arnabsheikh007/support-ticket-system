@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,8 +21,9 @@ class CheckRole
         }
 
         foreach ($roles as $role) {
-            if (auth()->user()->{"is" . ucfirst($role)}()) {
-                return $next($request);
+            $method = 'is' . ucfirst(Str::camel($role));
+            if (method_exists(auth()->user(), $method) && auth()->user()->$method()) {
+            return $next($request);
             }
         }
 
