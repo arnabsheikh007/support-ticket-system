@@ -10,8 +10,12 @@ class SupportEngineerController extends Controller
 {
     public function index()
     {
-        $tickets = Ticket::where('support_engineer_id', auth()->id())->get();
-        return view('support.tickets.index', compact('tickets'));
+        // Fetch tickets assigned to the current support engineer
+        $assignedTickets = Ticket::where('support_engineer_id', auth()->id())->paginate(10);
+        // Fetch unassigned tickets
+        $unassignedTickets = Ticket::whereNull('support_engineer_id')->paginate(10);
+
+        return view('support.tickets.index', compact('assignedTickets', 'unassignedTickets'));
     }
 
     public function show(Ticket $ticket)
@@ -47,7 +51,7 @@ class SupportEngineerController extends Controller
         if ($ticket->support_engineer_id !== auth()->user()->id) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         $request->validate([
             'comment' => 'required|string',
         ]);
