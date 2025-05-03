@@ -42,5 +42,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/tickets/{ticket}', [SupportEngineerController::class, 'show'])->name('support.tickets.show');
         Route::put('/tickets/{ticket}', [SupportEngineerController::class, 'update'])->name('support.tickets.update');
         Route::put('/tickets/{ticket}/claim', [SupportEngineerController::class, 'claim'])->name('support.tickets.claim');
+        Route::post('/tickets/{ticket}/comments', [SupportEngineerController::class, 'storeComment'])->name('support.tickets.comments.store');
     });
 });
